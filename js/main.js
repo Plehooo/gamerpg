@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {Net} from './net.js';
+import {lobby} from './lobby.js';
 import {buildWorld,mkChar,mkMob,anim} from './world.js';
 const $=s=>document.querySelector(s),net=new Net(),rnd=(a,b)=>a+Math.random()*(b-a);
 const R=new THREE.WebGLRenderer({antialias:true});R.setPixelRatio(Math.min(devicePixelRatio,2.5));R.setSize(innerWidth,innerHeight);
@@ -105,10 +106,11 @@ function loop(now){requestAnimationFrame(loop);let dt=Math.min((now-last)/1000,.
   $('#info').textContent=Math.round(fps)+' FPS · '+(net.online?(net.host?'Host':'Klien')+' · '+(Object.keys(net.players).length)+' pemain':'Solo');}
  if(stop>0){stop-=dt;dt=0;}update(dt,now/1000);R.render(S,C);}
 (async()=>{
- $('#name').textContent=name;const room=(new URLSearchParams(location.search).get('room')||'EMBER1').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6)||'EMBER1';
- const ok=await net.join(room,name,H);
- $('#banner').textContent=ok?'Online · Room '+room:'Mode Solo (isi firebaseConfig di js/config.js)';
- if(!ok||net.host)if(!Object.keys(mobs).length)seed();
+ const r=await lobby(net,H,name);
+ $('#name').textContent=r.name;
+ const b=$('#banner');b.textContent=r.solo?'Mode Solo':'Room '+r.room+' · tap untuk salin link';
+ if(!r.solo)b.onclick=()=>{const u=location.origin+location.pathname+'?room='+r.room;navigator.clipboard&&navigator.clipboard.writeText(u);b.textContent='Link disalin: '+r.room;};
+ if(r.solo||net.host)if(!Object.keys(mobs).length)seed();
  requestAnimationFrame(loop);
 })();
 setInterval(()=>{if(!net.host||!net.online)return;if(!Object.keys(mobs).length)seed();},1000);
