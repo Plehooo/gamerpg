@@ -1,0 +1,13 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#1a0d2b"><title>Realm of Embers</title>
+<link rel="manifest" href="manifest.json"><link rel="stylesheet" href="css/style.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script></head>
+<body><div id="pad"></div><div id="knob"></div>
+<div id="vig"></div><canvas id="mini" width="120" height="120"></canvas>
+<div id="banner"></div>
+<div id="hud"><div id="name"></div><div class="bar"><i id="hp"></i></div><div id="info"></div></div>
+<div id="chat"><div id="log"></div><input id="msg" maxlength="80" placeholder="Chat..." autocomplete="off"></div>
+<button id="atk" class="btn">⚔</button><button id="dodge" class="btn">➤</button>
+<script type="module" src="js/main.js"></script>
+<script>if('serviceWorker' in navigator)navigator.serviceWorker.register('service-worker.js');</script></body></html>
